@@ -85,7 +85,7 @@ export default function UnitCard({ unit, projectId, projectImage, delay = 0 }: U
                     <div className="flex justify-between items-start mb-4">
                         <div>
                             <h3 className="text-2xl font-bold text-gray-900 capitalize">
-                                {unit.type} #{unit.id}
+                                {unit.name ? (unit.name.toLowerCase().includes(unit.type.toLowerCase()) ? unit.name : `${unit.type} ${unit.name}`) : `${unit.type} #${unit.id}`}
                             </h3>
                             <p className="text-gray-500 font-medium">Floor {unit.floorNumber}</p>
                         </div>

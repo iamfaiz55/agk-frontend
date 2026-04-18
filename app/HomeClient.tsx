@@ -24,33 +24,33 @@ export default function HomeClient() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const projects = projectsData || [];
-  const project = projects?.[0]; 
+  const project = projects?.[0];
 
   const { data: amenitiesData } = useGetAmenitiesQuery(project?.id ? project.id : undefined, {
-      skip: !project?.id
+    skip: !project?.id
   });
 
 
   useEffect(() => {
     // Only load the rest after a small delay to prioritize the Hero paint
     const timer = setTimeout(() => {
-        setIsLoaded(true);
-    }, 100); 
+      setIsLoaded(true);
+    }, 100);
     return () => clearTimeout(timer);
   }, []);
 
   const projectImageUrl = useMemo(() => project?.images?.[0]?.images?.[0] || projectData.heroImage, [project]);
-  const API_URL = 'https://api.agkinfrastructures.com';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api$/, '') || 'http://localhost:3110';
 
   // Process Carousels from API
   const activeCarousels = useMemo(() => (carouselsData || []).filter((c: any) => c.isActive), [carouselsData]);
-  
+
   const desktopCarouselImages = useMemo(() => activeCarousels.map((c: any) => ({
-      id: c.id,
-      url: c.imageDesktop?.startsWith('http') ? c.imageDesktop : `${API_URL}${c.imageDesktop}`,
-      title: c.title,
-      buttonText: c.title ? 'View Details' : undefined,
-      buttonLink: c.link
+    id: c.id,
+    url: c.imageDesktop?.startsWith('http') ? c.imageDesktop : `${API_URL}${c.imageDesktop}`,
+    title: c.title,
+    buttonText: c.title ? 'View Details' : undefined,
+    buttonLink: c.link
   })), [activeCarousels]);
 
   const mobileCarouselImages = useMemo(() => activeCarousels.map((c: any) => ({
@@ -62,11 +62,11 @@ export default function HomeClient() {
   })), [activeCarousels]);
 
   if (isCarouselsLoading) {
-      return (
-          <div className="min-h-screen bg-white flex items-center justify-center">
-              <div className="animate-pulse text-[#D4AF37] font-medium tracking-widest uppercase text-xs md:text-sm">Loading Luxury Experience...</div>
-          </div>
-      );
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="animate-pulse text-[#D4AF37] font-medium tracking-widest uppercase text-xs md:text-sm">Loading Luxury Experience...</div>
+      </div>
+    );
   }
 
   return (
@@ -74,7 +74,7 @@ export default function HomeClient() {
       <Header />
 
       {/* Critical: Load immediately */}
-      <HeroSection 
+      <HeroSection
         desktopCarouselImages={desktopCarouselImages}
         mobileCarouselImages={mobileCarouselImages}
         projectImageUrl={projectImageUrl}
@@ -83,21 +83,21 @@ export default function HomeClient() {
       {/* Defer loading of non-critical sections until client mount */}
       {isLoaded && (
         (!project && (isProjectsLoading || isUnitsLoading)) ? (
-            <div className="py-20 flex justify-center items-center bg-gray-50">
-                 <div className="animate-pulse text-gray-400 text-sm tracking-widest uppercase">Initializing Experience...</div>
-            </div>
+          <div className="py-20 flex justify-center items-center bg-gray-50">
+            <div className="animate-pulse text-gray-400 text-sm tracking-widest uppercase">Initializing Experience...</div>
+          </div>
         ) : (
-            <>
-                {project && (
-                  <>
-                    <InventorySection project={project} units={unitsData} projectImageUrl={projectImageUrl} />
-                    <InvestmentHighlights />
-                    <AmenitiesSection project={project} amenities={amenitiesData} />
-                    <ContactSection project={project} />
-                  </>
-                )}
-                <Footer />
-            </>
+          <>
+            {project && (
+              <>
+                <InventorySection project={project} units={unitsData} projectImageUrl={projectImageUrl} />
+                <InvestmentHighlights />
+                <AmenitiesSection project={project} amenities={amenitiesData} />
+                <ContactSection project={project} />
+              </>
+            )}
+            <Footer />
+          </>
         )
       )}
     </div>

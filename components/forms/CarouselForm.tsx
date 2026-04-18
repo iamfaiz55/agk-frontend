@@ -45,7 +45,7 @@ export default function CarouselForm({
     },
   });
 
-  const API_URL = 'https://api.agkinfrastructures.com';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api$/, '') || 'http://localhost:3110';
   const [previewDesktop, setPreviewDesktop] = useState<string | null>(
     initialData?.imageDesktop 
       ? (initialData.imageDesktop.startsWith('http') ? initialData.imageDesktop : `${API_URL}${initialData.imageDesktop}`) 

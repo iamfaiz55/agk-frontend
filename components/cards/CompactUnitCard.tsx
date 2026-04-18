@@ -85,7 +85,7 @@ export default function CompactUnitCard({ unit, projectId, projectImage, classNa
                     <div className="p-4 flex-1 flex flex-col justify-between">
                         <div>
                             <h4 className="text-xs md:text-sm font-normal text-gray-900 line-clamp-1 uppercase tracking-[0.1em] mb-1">
-                                {unit.type} {unit.id}
+                                {unit.name ? (unit.name.toLowerCase().includes(unit.type.toLowerCase()) ? unit.name : `${unit.type} ${unit.name}`) : `${unit.type} ${unit.id}`}
                             </h4>
                             <p className="text-[10px] md:text-xs text-gray-400 font-normal">Floor {unit.floorNumber}</p>
                         </div>

@@ -20,6 +20,7 @@ export const carouselApi = createApi({
     keepUnusedDataFor: 3600, // Cache data for 1 hour
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://api.agkinfrastructures.com/api',
+        // baseUrl: 'http://localhost:3110/api',
         prepareHeaders: (headers, { getState }) => {
             const token = (getState() as RootState).auth.token;
             if (token) {

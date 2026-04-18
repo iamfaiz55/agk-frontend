@@ -60,7 +60,7 @@ export default function CarouselPage() {
       setShowForm(true);
   };
 
-  const API_URL = 'https://api.agkinfrastructures.com';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api$/, '') || 'http://localhost:3110';
 
   return (
     <div className="max-w-7xl mx-auto">

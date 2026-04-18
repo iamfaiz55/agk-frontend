@@ -6,6 +6,7 @@ export const amenitiesApi = createApi({
     reducerPath: 'amenitiesApi',
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://api.agkinfrastructures.com/api',
+        // baseUrl: 'http://localhost:3110/api',
         prepareHeaders: (headers, { getState }) => {
             const token = (getState() as RootState).auth.token;
             if (token) {

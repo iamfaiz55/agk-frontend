@@ -8,6 +8,7 @@ export const projectsApi = createApi({
     keepUnusedDataFor: 3600, // Cache data for 1 hour
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://api.agkinfrastructures.com/api',
+        // baseUrl: 'http://localhost:3110/api',
         prepareHeaders: (headers, { getState }) => {
             const token = (getState() as RootState).auth.token;
             if (token) {
@@ -46,20 +47,20 @@ export const projectsApi = createApi({
 
                     // images comes as BuildingImageSection[] or stringified BuildingImageSection[]
                     const rawImages = (typeof project.images === 'string' ? parseJson(project.images) : project.images) as unknown as any[];
-                    
+
                     const images = (Array.isArray(rawImages) ? rawImages : []).map(section => ({
                         title: section.title || 'General',
-                        images: (Array.isArray(section.images) ? section.images : []).map((url: string) => 
+                        images: (Array.isArray(section.images) ? section.images : []).map((url: string) =>
                             url.startsWith('http') ? url : `https://api.agkinfrastructures.com${url}`
                         )
                     }));
 
-                    return { 
-                        ...project, 
-                        images, 
-                        commercialFeatures, 
-                        residentialFeatures, 
-                        investmentPoints 
+                    return {
+                        ...project,
+                        images,
+                        commercialFeatures,
+                        residentialFeatures,
+                        investmentPoints
                     } as Building;
                 });
             },

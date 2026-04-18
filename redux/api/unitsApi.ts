@@ -11,6 +11,7 @@ const transformUnitResponse = (response: any): Unit[] => {
                 unit.images = (Array.isArray(parsed) ? parsed : []).map((img: any) => {
                     const url = typeof img === 'string' ? img : img.url;
                     return url.startsWith('http') ? url : `https://api.agkinfrastructures.com${url}`;
+                    // return url.startsWith('http') ? url : `http://localhost:3110${url}`;
                 });
             } catch {
                 unit.images = [];
@@ -24,7 +25,9 @@ export const unitsApi = createApi({
     reducerPath: 'unitsApi',
     tagTypes: ['Units', 'UnitRequests'],
     baseQuery: fetchBaseQuery({
+
         baseUrl: 'https://api.agkinfrastructures.com/api',
+        // baseUrl: 'http://localhost:3110/api',
         prepareHeaders: (headers, { getState }) => {
             const token = (getState() as RootState).auth.token;
             if (token) {
@@ -76,7 +79,7 @@ export const unitsApi = createApi({
                     const rawImages = (typeof building.images === 'string' ? parseJson(building.images) : building.images) as unknown as any[];
                     const images = (Array.isArray(rawImages) ? rawImages : []).map(section => ({
                         title: section.title || 'General',
-                        images: (Array.isArray(section.images) ? section.images : []).map((url: string) => 
+                        images: (Array.isArray(section.images) ? section.images : []).map((url: string) =>
                             url.startsWith('http') ? url : `https://api.agkinfrastructures.com${url}`
                         )
                     }));
