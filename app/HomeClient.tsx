@@ -7,35 +7,29 @@ import Footer from '@/components/layout/Footer';
 import HeroSection from '@/components/home/HeroSection';
 import { projectData } from '@/data/mockData';
 import { useGetProjectsQuery } from '@/redux/api/projectsApi';
-import { useGetUnitsQuery } from '@/redux/api/unitsApi';
-import { useGetAmenitiesQuery } from '@/redux/api/amenitiesApi';
 import { useGetCarouselsQuery } from '@/redux/api/carouselApi';
 
-// Dynamically import heavy sections
-const InventorySection = dynamic(() => import('@/components/home/InventorySection'), { ssr: false });
-const AmenitiesSection = dynamic(() => import('@/components/home/AmenitiesSection'), { ssr: false });
-const InvestmentHighlights = dynamic(() => import('@/components/home/InvestmentHighlights'), { ssr: false });
+// Dynamically import sections for performance optimization
+const AboutSection = dynamic(() => import('@/components/home/AboutSection'), { ssr: false });
+const ServicesSection = dynamic(() => import('@/components/home/ServicesSection'), { ssr: false });
+const WhyChooseUs = dynamic(() => import('@/components/home/WhyChooseUs'), { ssr: false });
+const ProjectsSection = dynamic(() => import('@/components/home/ProjectsSection'), { ssr: false });
+const ProcessSection = dynamic(() => import('@/components/home/ProcessSection'), { ssr: false });
+const TestimonialsSection = dynamic(() => import('@/components/home/TestimonialsSection'), { ssr: false });
 const ContactSection = dynamic(() => import('@/components/home/ContactSection'), { ssr: false });
 
 export default function HomeClient() {
   const { data: projectsData, isLoading: isProjectsLoading } = useGetProjectsQuery({ includeUnits: true });
-  const { data: unitsData, isLoading: isUnitsLoading } = useGetUnitsQuery({ status: 'available' });
   const { data: carouselsData, isLoading: isCarouselsLoading } = useGetCarouselsQuery();
   const [isLoaded, setIsLoaded] = useState(false);
 
   const projects = projectsData || [];
-  const project = projects?.[0];
-
-  const { data: amenitiesData } = useGetAmenitiesQuery(project?.id ? project.id : undefined, {
-    skip: !project?.id
-  });
-
+  const project = projects?.[0]; 
 
   useEffect(() => {
-    // Only load the rest after a small delay to prioritize the Hero paint
     const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 100);
+        setIsLoaded(true);
+    }, 100); 
     return () => clearTimeout(timer);
   }, []);
 
@@ -44,13 +38,13 @@ export default function HomeClient() {
 
   // Process Carousels from API
   const activeCarousels = useMemo(() => (carouselsData || []).filter((c: any) => c.isActive), [carouselsData]);
-
+  
   const desktopCarouselImages = useMemo(() => activeCarousels.map((c: any) => ({
-    id: c.id,
-    url: c.imageDesktop?.startsWith('http') ? c.imageDesktop : `${API_URL}${c.imageDesktop}`,
-    title: c.title,
-    buttonText: c.title ? 'View Details' : undefined,
-    buttonLink: c.link
+      id: c.id,
+      url: c.imageDesktop?.startsWith('http') ? c.imageDesktop : `${API_URL}${c.imageDesktop}`,
+      title: c.title,
+      buttonText: c.title ? 'View Details' : undefined,
+      buttonLink: c.link
   })), [activeCarousels]);
 
   const mobileCarouselImages = useMemo(() => activeCarousels.map((c: any) => ({
@@ -62,11 +56,11 @@ export default function HomeClient() {
   })), [activeCarousels]);
 
   if (isCarouselsLoading) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="animate-pulse text-[#D4AF37] font-medium tracking-widest uppercase text-xs md:text-sm">Loading Luxury Experience...</div>
-      </div>
-    );
+      return (
+          <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+              <div className="animate-pulse text-[#FCA311] font-bold tracking-widest uppercase text-xs md:text-sm">Loading Experience...</div>
+          </div>
+      );
   }
 
   return (
@@ -74,7 +68,7 @@ export default function HomeClient() {
       <Header />
 
       {/* Critical: Load immediately */}
-      <HeroSection
+      <HeroSection 
         desktopCarouselImages={desktopCarouselImages}
         mobileCarouselImages={mobileCarouselImages}
         projectImageUrl={projectImageUrl}
@@ -82,23 +76,16 @@ export default function HomeClient() {
 
       {/* Defer loading of non-critical sections until client mount */}
       {isLoaded && (
-        (!project && (isProjectsLoading || isUnitsLoading)) ? (
-          <div className="py-20 flex justify-center items-center bg-gray-50">
-            <div className="animate-pulse text-gray-400 text-sm tracking-widest uppercase">Initializing Experience...</div>
-          </div>
-        ) : (
-          <>
-            {project && (
-              <>
-                <InventorySection project={project} units={unitsData} projectImageUrl={projectImageUrl} />
-                <InvestmentHighlights />
-                <AmenitiesSection project={project} amenities={amenitiesData} />
-                <ContactSection project={project} />
-              </>
-            )}
-            <Footer />
-          </>
-        )
+            <>
+                <AboutSection />
+                <ServicesSection />
+                <WhyChooseUs />
+                <ProjectsSection projects={projects} />
+                <ProcessSection />
+                <TestimonialsSection />
+                <ContactSection />
+                <Footer />
+            </>
       )}
     </div>
   );

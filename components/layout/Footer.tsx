@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-
 import Image from 'next/image';
 
 export default function Footer() {
@@ -10,15 +9,16 @@ export default function Footer() {
 
   const quickLinks = [
     { href: '/', label: 'Home' },
-    { href: '/projects', label: 'Projects' },
-    { href: '/#amenities', label: 'Amenities' },
-    { href: '/#contact', label: 'Contact' },
+    { href: '/#about', label: 'About Us' },
+    { href: '/#projects', label: 'Projects' },
+    { href: '/#process', label: 'Our Process' },
   ];
 
-  const legalLinks = [
-    { href: '/privacy', label: 'Privacy Policy' },
-    { href: '/terms', label: 'Terms & Conditions' },
-    { href: '/about', label: 'About Us' },
+  const services = [
+    { href: '/#services', label: 'Construction Services' },
+    { href: '/#services', label: 'Project Management' },
+    { href: '/#services', label: 'Infrastructure Dev' },
+    { href: '/#services', label: 'Renovation & Maintenance' },
   ];
 
   const socialLinks = [
@@ -29,31 +29,29 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="bg-slate-950 text-slate-400">
+      <div className="container mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Company Info */}
           <div>
-            <div className="mb-6">
-              <div className="relative w-48 h-16">
-                <Image
-                  src="/logo/agk-final-new.png"
-                  alt="AGK Infrastructures"
-                  fill
-                  className="object-contain object-left"
-                />
+            <div className="mb-6 flex items-center gap-2">
+              <div className="w-10 h-10 bg-[#FCA311] rounded-sm flex items-center justify-center font-bold text-slate-900 text-xl border-b-4 border-amber-600">
+                A
               </div>
+              <span className="text-2xl font-black tracking-tighter text-white">
+                AGK<span className="text-[#FCA311]">INFRA</span>
+              </span>
             </div>
-            <p className="text-gray-400 mb-4">
-              Building dreams, creating homes. Premium real-estate development with excellence and trust.
+            <p className="text-slate-500 mb-6 leading-relaxed">
+              Building Reliable Infrastructure for Tomorrow. Expert construction, project management, and development services.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
                 <motion.a
                   key={social.label}
                   href={social.href}
-                  whileHover={{ scale: 1.2 }}
-                  className="text-2xl"
+                  whileHover={{ y: -3 }}
+                  className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-slate-400 hover:text-[#FCA311] hover:bg-slate-800 transition-all shadow-sm"
                   aria-label={social.label}
                 >
                   {social.icon}
@@ -64,26 +62,26 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
+            <h4 className="text-lg font-bold text-white tracking-widest uppercase mb-6">Quick Links</h4>
+            <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-gray-400 hover:text-[#D4AF37] transition-colors">
-                    {link.label}
+                  <Link href={link.href} className="text-slate-500 hover:text-[#FCA311] transition-colors inline-block">
+                     → {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Legal */}
+          {/* Services */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Legal</h4>
-            <ul className="space-y-2">
-              {legalLinks.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-gray-400 hover:text-[#D4AF37] transition-colors">
-                    {link.label}
+            <h4 className="text-lg font-bold text-white tracking-widest uppercase mb-6">Services</h4>
+            <ul className="space-y-3">
+              {services.map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-slate-500 hover:text-[#FCA311] transition-colors inline-block">
+                    → {link.label}
                   </Link>
                 </li>
               ))}
@@ -92,25 +90,37 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li>📍 Mitmita, Chhatrapati Sambhajinagar</li>
-              <li>📞 +91 70205 15701</li>
-              <li>✉️ agkinfrastructures@gmail.com</li>
-              <li>🕒 Mon - Sat: 9:00 AM - 6:00 PM</li>
+            <h4 className="text-lg font-bold text-white tracking-widest uppercase mb-6">Contact Info</h4>
+            <ul className="space-y-4 text-slate-500 font-medium">
+              <li className="flex items-start gap-3">
+                <span className="text-[#FCA311] mt-0.5">📍</span> 
+                <span>Mitmita, Chhatrapati Sambhajinagar</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="text-[#FCA311]">📞</span> 
+                <span>+91 70205 15701</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="text-[#FCA311]">✉️</span> 
+                <span>info@agkinfrastructures.com</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="text-[#FCA311]">✉️</span> 
+                <span>career@agkinfrastructures.com</span>
+              </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p className="mb-2">&copy; {currentYear} AGK Infrastructures. All rights reserved.</p>
-          <p className="text-sm">
+        <div className="border-t border-slate-800/50 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-600">
+          <p>&copy; {currentYear} AGK Infrastructures. All rights reserved.</p>
+          <p>
             Created, Designed and Developed by{' '}
             <a
               href="https://shaikhfaiz.top"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#D4AF37] hover:text-[#F4D03F] hover:underline transition-colors font-medium"
+              className="text-[#FCA311] hover:underline transition-colors font-semibold"
             >
               Shaikh Faiz
             </a>
@@ -120,4 +130,3 @@ export default function Footer() {
     </footer>
   );
 }
-
